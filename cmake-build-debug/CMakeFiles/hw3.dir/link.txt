@@ -1,0 +1,1 @@
+/usr/bin/c++  -g  -rdynamic CMakeFiles/hw3.dir/main.cpp.o  -o hw3 -lGL -lGLU -lglut -lXmu -lXi 

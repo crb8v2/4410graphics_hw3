@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/crbaniak/Link to fall18/4410_compGraphics/hw3/RGBpixmap.h
+string
+-
+iostream
+-
+fstream
+-
+strstream
+-
+GL/glut.h
+-
+
+/home/crbaniak/Link to fall18/4410_compGraphics/hw3/main.cpp
+GL/glut.h
+-
+stdlib.h
+-
+math.h
+-
+stdio.h
+-
+RGBpixmap.h
+/home/crbaniak/Link to fall18/4410_compGraphics/hw3/RGBpixmap.h
+
