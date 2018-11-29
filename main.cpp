@@ -38,7 +38,7 @@ int mazeMap[12][12] = {
         {1, 0, 1, 0, 1, 0, 0, 2, 0, 2, 0, 1},
         {1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1},
         {1, 0, 1, 0, 1, 1, 1, 0, 0, 2, 1, 1},
-        {1, 0, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+        {1, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
         {1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
@@ -276,6 +276,10 @@ void myInit(){
     waypoints.setTexture(4);
 }
 
+void collisionDetection(){
+
+}
+
 int main(int argc, char **argv) {
 
     // general initializations
@@ -293,6 +297,8 @@ int main(int argc, char **argv) {
     glutSpecialFunc(pressSpecialKey); // process special key pressed
     // Warning: Nonstandard function! Delete if desired.
     glutSpecialUpFunc(releaseSpecialKey); // process special key release
+
+    collisionDetection();
 
     myInit();
 
