@@ -18,24 +18,29 @@ float x = 0.0, z = 0.0; // initially 5 units south of origin
 float deltaMove = 0.0; // initially camera doesn't move
 // Camera direction
 float lx = 0.0, lz = 1.0; // camera points initially along z-axis
-float angle = 0.0; // angle of rotation for the camera direction
+float angle = 160.0; // angle of rotation for the camera direction
+
+//for teapots
+float x_angle = 0.0f;
+float y_angle = 0.0f;
 
 RGBpixmap floors;
 RGBpixmap wall;
 RGBpixmap ceiling;
+RGBpixmap waypoints;
 
 int mazeMap[12][12] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1},
         {1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1},
-        {1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1},
+        {1, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1},
         {1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
-        {1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 0, 0, 2, 0, 2, 0, 1},
         {1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1},
-        {1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+        {1, 0, 1, 0, 1, 1, 1, 0, 0, 2, 1, 1},
+        {1, 0, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1},
         {1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {1, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
@@ -53,6 +58,11 @@ void update(void) {
         x += deltaMove * lx * 0.1;
         z += deltaMove * lz * 0.1;
     }
+
+    GLfloat rot_speed = 0.2f;
+    x_angle += rot_speed;
+    y_angle += rot_speed;
+
     glutPostRedisplay(); // redisplay everything
 }
 
@@ -168,13 +178,21 @@ void drawMazeCubes(){
 
     for(xx = 0; xx < 12; xx++){
         for(zz = 0; zz < 12; zz++){
-            if(mazeMap[xx][zz] == 1){
+            if(mazeMap[xx][zz] == 1) {
                 int holdxx, holdzz;
                 holdxx = xx;
                 holdzz = zz;
                 holdxx -= 6;
                 holdzz -= 6;
                 wallCube(holdxx, 0, holdzz, 2);
+            } else if (mazeMap[xx][zz] == 2){
+                glPushMatrix();
+                glBindTexture(GL_TEXTURE_2D, 4);
+                glTranslated(xx - 5.5, 0.5, zz - 5.5);
+                glRotated(x_angle, 0.5, 0.0, 0.0);
+                glRotated(y_angle, 0.0, 0.5, 0.0);
+                glutSolidTeapot(0.1);
+                glPopMatrix();
             }
         }
     }
@@ -184,7 +202,7 @@ void renderScene(void) {
     int xx, zz;
 
     // Clear color and depth buffers
-    glClearColor(0.0, 0.7, 1.0, 1.0); // sky color is light blue
+    glClearColor(0.25, 0.0, 0.5, 1.0); // sky color is light blue
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
@@ -214,10 +232,10 @@ void processNormalKeys(unsigned char key, int xx, int yy) {
 void pressSpecialKey(int key, int xx, int yy) {
     switch (key) {
         case GLUT_KEY_UP :
-            deltaMove = 0.02f;
+            deltaMove = 0.04f;
             break;
         case GLUT_KEY_DOWN :
-            deltaMove = -0.02f;
+            deltaMove = -0.04f;
             break;
         case GLUT_KEY_LEFT:
             angle -= 0.2f;
@@ -254,6 +272,8 @@ void myInit(){
     wall.setTexture(2);
     ceiling.readBMPFile("roofy.bmp");
     ceiling.setTexture(3);
+    waypoints.readBMPFile("star.bmp");
+    waypoints.setTexture(4);
 }
 
 int main(int argc, char **argv) {
